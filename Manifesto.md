@@ -1,5 +1,5 @@
-Attention editors: Please mark non-trivial additions and changes with a comment, so we can all see what is up; Robert will gc such things once consensus is reached or when it seems likely everyone has had a chance to see it.
-Causes
+# Causes
+
 A bug tracker built to free developers from the tedium of manual assessment and ‘bug gardening’. Uses automation and statistics to present information about the project and the experiences users are having. Bridges the gap between users and developers by explicitly gathering symptoms and signs from users, while letting developers track proposed fixes separately. Inspired by many conversations around what bug trackers need to deliver for projects.
 
 
@@ -10,34 +10,8 @@ Causes models bug reports as the interaction between four separate things:
 * Plans which document intended changes to the project. Sometimes called specifications or story cards. Plans may stand alone or be linked to Symptoms or Signs that they are intended to address. Plans can range from very small - indeed trivial - to large complex documents with numerous dependencies. Developer discussion about diagnosis and investigation would typically occur on a plan.
 
 
-Causes
-Why?
-Minimum viable product
-Features
-Dedicated user, developer and project manager interfaces
-Sensible assumptions
-Does one thing well
-Work with your bugs on the road
-Work privately with a public project’s bugs
-Integrates with your existing data
-Implementation
-Project / governance
-Values
-Archetypes
-Projects
-Users
-Organisations
-Prior art / inspiration
-Axioms
-Non-features
-Cross-project bugs
-Distribution bug tracking
-Project timelines, Kanban, VCS integration etc etc.
-Design decisions
-More stuff not sorted yet
+# Why?
 
-
-Why?
 Good bug trackers make a big difference to projects. They help users communicate with developers and find solutions/workarounds to issues they have. They help developers find out about issues with their products and converge on good solutions. They help project managers assess the health of the project and plan/manage releases; they help multiple service providers coordinate work on a project.
 
 
@@ -48,7 +22,9 @@ We are arrogant enough to think we can do better.
 
 
 Should we contribute our ideas to an existing tracker like Launchpad, Trac or Bugzilla? Perhaps. On the plus side existing implementations have existing communities, code, infrastructure and user bases. On the down side they have existing communities, code, infrastructure and users that provide a brake on radical do-overs : and what we are proposing is in some ways very different. If we provide a minimal implementation that gathers sufficient interest existing tools may gather the social buy-in necessary to change - and we could stop our new tool. Win. Or we might gather a community to maintain it and just be another [better] tool. Either way, doing a new tool seems like less overall effort, and since we have a significant number of ‘what if’ questions to answer, the easier we can answer them the better.
-Minimum viable product
+
+# Minimum viable product
+
 The smallest implementation we can use ourselves that would be usable:
 1. Persistent storage [so data entered is kept]
 2. Plans, Project and Symptom objects [so that the basic workflow is encodable]. Signs - later, perhaps a specialised Symptom?
@@ -59,23 +35,36 @@ The smallest implementation we can use ourselves that would be usable:
 2. Ability to import an existing bug database and run some sort of automated analysis over it, split bugs into plans etc. See how it looks.
 3. An interface of some sort[a]. Text files files for editing and a CLI query interface may be enough to see if there is value.
 ________________
-Features
-Dedicated user, developer and project manager interfaces[b]
+
+# Features
+
+## Dedicated user, developer and project manager interfaces[b]
+
 Users are usually not really interested in bug reports. Users are interested in
 * solving/working around the problem they have encountered,
 *  knowing if it is fixed in a later release,
 *  and assessing if/when they will be able to get a fix (that hasn’t been written yet)
 * Obtaining developer time to fix their problem
 Tracking symptoms (user prose describing a problem) and signs (automatically gathered data about a problem - such as a segfault) separately from proposed changes to the project and  separately from tracking what gets done when provides dedicated interfaces that meets users needs, developers needs and the needs of folk that do planning (common in commercial organisations that may also use Causes). [not validated - experience with Bazaar, Ubuntu etc was a strong indicator - this can be decomposed into smaller validated and nonvalidated bits]
-Sensible assumptions
+
+## Sensible assumptions
+
 In the absence of explicit decisions, Causes makes sensible assumptions - and updates those as the facts change. For instance, a symptom many users are experiencing is assumed to be more important to the project than one that only a single user has reported. If a developer overrides that, the override sticks until removed. [Importance Not validated.]
-Does one thing well
+
+## Does one thing well
+
 Causes is a new take on bug trackers. This is a rich subject that is worth doing well. Causes is not a project management tool[c], nor a kanban tool, nor a VCS history viewer, nor <fill in the blanks>. Causes offers an API permitting it to trigger events in other systems, and likewise be updated in response to events in other systems. We consider it a bug if slick automation cannot be easily created to connect Causes to services such as VCS hosting, CI systems, crash reporting systems …
-Work with your bugs on the road
+
+## Work with your bugs on the road
+
 We’ve all been in the situation of needing to work with bugs at a conference with shocking wifi, or copy a bunch of symptoms for reproduction of a problem while travelling. Causes expects such situations [d]and allows you to run a local Causes repository that integrates with your projects main online repository.
-Work privately with a public project’s bugs
+
+## Work privately with a public project’s bugs
+
 Many organisations work on public projects but cannot share all their discussion about particular issues with the public project. They may have a weak fork of the project in fact and have some bugs that are local only. Wouldn’t it be great to use the same bug tracking software upstream and locally, with a full copy of the public data set mirrored into your local repository? Causes supports this as just another case of distributed data.
-Integrates with your existing data[e]
+
+## Integrates with your existing data[e]
+
 There are many sources of data that help manage a bug report. Commits to VCS can be excluded as causes if they happened after the report was filed. Crash database reports can provide backtraces and variable values. Bug reports in the bug trackers of distributions can provide more context or reproduction instructions. Commits can indicate that a bug is probably fixed. The same core logic that drives offline access and behind-the-firewall replication is used to work with other data sources.
 
 
@@ -87,17 +76,20 @@ Clearly shows what you and your collaborators have done
 The flip side of knowing what you are doing is knowing what you have done (within Causes, obviously!). Causes can summarise this for you, making it easy to talk about what you have done for a project. Similarly, see what has happened in the whole project recently, over the last month or year. [not validated; the keep-aware-of-things aspect is fairly obvious; the advertise-myself less so]
 
 
-Implementation
+# Implementation
 1. Open source. We all have day jobs and are not interested in doing a startup in competition with atlassian/github/pivotal/fogbugz... Probably Apache V2/MIT. Not validated.
 2. Clean and lean. We don’t want a POS bag of everything to maintain. We may end up creating several narrow but cooperating projects[f] (such as core, notification/subscriptions,web UI). Validated by past experience.
 3. Easily deployed. Minimally for local testing, but also as we’re not commercially funded we don’t anticipate running a central service - so if folk cannot deploy it, they cannot use it. Validated by past experience.
 4. Easily operated. Again, if it cannot be run by non-developers, we are likely going to paint ourselves into a run-a-central-service or only-we-use-it corner.
-Project / governance
+
+# Project / governance
+
 1. Code on github.
 2. CI from get-go
 3. Weak consensus decision making
 4. Canvas for assessing the project - http://www.netprofess.com/canvas.php#3f614c35cee955cfd1678920be9d1d46f8a93c31
-Values[g]
+
+# Values[g]
 1. Only encourage effort that is valuable to projects. Validated by self-learning from initial team: wasted effort [h]is something we don’t like.
 2. Respect time and effort involved in contributions from all parties: users, intermediaries, developers, project leaders. Relatedly, encourage people to be good to each other, even though there will be conflicting interests and opinions. Validated by reactions from ourselves and others on violations of this value.
 3. Work well for projects with mildly different needs. Not validated; can be validated as soon as we encounter a ‘can’t use this without X’ situation.
@@ -105,26 +97,28 @@ Values[g]
 5. Keep human/intentional things and machine set/inferred/gathered things separate[i]. Not validated, perhaps a derivative of ‘learn and infer’.
 
 
-Archetypes
-Projects
+# Archetypes
+
+## Projects
 1. Freegen - a small personal project, 5-10 open bugs, activity happens rarely. Does lightweight releases, does not track multiple stable versions. Users are highly technical. Bugs are usually shallow and hard to confuse with other bugs. No related projects.
 2. Market - a small commercially funded project, 2000 open bugs, low but regular activity from users. Developer activity a few times a week from 3-4 developers. Does releases, tracks multiple stable versions. Users are often non-technical but sometimes very technical. Actively tries to bring users across the fold to become developers. Bugs can be very subtle and hard to differentiate from other bugs. Has related projects for plugins, and multiple organisations doing commercial support. Bugs often require private data of users to reproduce.
 3. BigVector - a big commercially funded project with 5000 open bugs, activity from hundreds of users a week, and likewise from hundreds of developers. Does releases, tracks multiple stable versions. Users are usually technical but not aware of project internals. Bugs are generally easy to differentiate. Has related projects for different facets of the project, multiple organisations doing commercial development and support. Bugs rarely require private data to reproduce, but the project has regular security vulnerabilities that have to be disclosed with care.
 
 
-Users
+## Users
 1. Fred - a user of Market, Fred is not very technical, but enthusiastic and happy to try new code branches. Fred has a couple of bugs open with Market that are driving him up the wall.
 2. Gary - a user of BigVector, Gary has a commercial support contract with BigVendor, 4 open bugs that affect him, and is a personal contributor to Market.
 3. Jo -  the developer of Freegen, works on it a few hours a month, as time permits.
 4. Mary - a developer on BigVector, working for BigVendor. Spend most of her time writing code with some planning and user support time thrown in for good measure. Deals with private data from BigVendor clients when needed, and is part of the release team for BigVector.
 
 
-Organisations
+## Organisations
 1. Speculative, a web 2.0 company that funds Market. Drives Market as a project and collaborates with ServiceCo supporting users of Market.
 2. ServiceCo, a systems integrator, has users using Market. ServiceCo manages the bugs filed by their users and takes care of analysing and fixing them.
 3. SwitchCo - a network switch vendor, contributes to the development of BigVector, has users using it and provides support to them. Manages tickets from their users in a private system.
 4. MachineCo - a PC server vendor, contributes to the development of BigVector, has users using it and supports them. Also manages tickets in private.
-Prior art / inspiration
+
+# Prior art / inspiration
 * Launchpad has a very good bug tracker. It’s UI is very complex, it is very hard to run private instances, has a very limited notification/event raising mechanism. It has no machine learning embedded in it. It conflates work tracking and planning, does little to support kanban - and work tracking and defect tracking are separate (but see mpt's spec for an issue tracker for future plans). LP is very straightforward to use, with a battle-tested balance between capability and clutter. LP also models the needs of Linux distributions well - and is quite unique in that regard.
 * Pivotaltracker is an agile story tracker - not a bug tracker (though it can double for small projects and integrate for big ones.
 * Bugzilla - well known, but not in any sense simple.
@@ -132,36 +126,42 @@ Prior art / inspiration
 * https://lists.launchpad.net/launchpad-dev/msg07824.html is the start of a thread about modelling of bugs in Launchpad, which includes some useful principles.
 * uservoice.com
 * git (a very successful distributed source control system: most interesting as prior art for an effective user model of distributed data).
-Axioms
+
+# Axioms
 That is, things we are going to assume but not try to validate :)
 * We can make something useful in our spare time, despite us all having interesting day jobs
-Non-features
+
+# Non-features
 
 
-Cross-project bugs
+## Cross-project bugs
 The cross-project bug feature in Launchpad is arguably a special case of replicated discussion about a distributed bug. As we don’t want to build a single point of service, this implies that cross-project bugs as a specific feature is uninteresting. We may support federation, and if so there is no particular reason to preclude federating with a bug in another project in the same tracker instance.
 
 As such, cross-project bugs are not a first class feature.
 
 
-Distribution bug tracking[j]
+## Distribution bug tracking[j]
 Tracking bugs for distributions is somewhat different to bug tracking for individual projects. They do interact in that many software projects are shipped by distributions, and thus symptoms users experience may be farmed from the shipping distributions bug trackers. However, there are at least a thousand times more software projects than Linux distributions, and proportionally fewer chances to be adopted as the bug tracker for a distribution.  It will be nice if what we build is suitable for tracking the bugs of a distribution, and we won’t reject volunteer work to make it suitable.
 
 
 But we won’t set out to make it suitable at this stage.
 
 
-Project timelines, Kanban, VCS integration etc etc.
+## Project timelines, Kanban, VCS integration etc etc.
 While such things are important, we want to keep Causes focused. As such, we won’t add things to Causes itself that are not part of its necessary core features... but we may well create a collection of ‘you probably want this’ API scripts / extensions. For instance, integrating with github is probably a must-do; ditto trello.
-Architecture
+
+# Architecture
 Background on various decisions can be found https://docs.google.com/a/robertcollins.net/document/d/1eVSwZoRmz9-JWKQaDQWfIMpOE8JRpWSH-awSBMYlqIw/edit#
-Repository
+
+## Repository
 A repository stores data for a project; repositories can be easily and quickly created, and interacted with entirely via a CLI. CLI access uses local credentials. Repositories can trigger local hooks in response to events. Repositories are individually queryable, and have no authentication. They are local artifacts but may be configured with network identities (e.g. HTTP, SMTP etc) to allow push notifications to reach them for replicated items. Repositories store only what replication subscriptions it has, not where it should send notifications. All actions are notified by local hooks. SMTP notifications can be hooked in there, and HTTP notifications are PSHB new content notifications (generated only when the HTTP daemon is running). Repositories do not know who will be notified in response to events.
-Subscriptions
+
+## Subscriptions
 Possibly in the repository, possibly as a separate store, subscription information is stored. This is logically separate but may be easiest to manage in the repository. Subscriptions map any notifiable object to a notification endpoint (such as an email address), possibly with wildcards.
 
 
-Notification
+## Notification
+
 For HTTP notifications, PSHB updates are generated for the predictable feeds: e.g. one for the object itself, one for each container that the object is in, one for any aggregates the object is part of. The issue of doing updates for search results and the like is not addressed.
 
 
@@ -175,16 +175,19 @@ For SMTP, a local repository hook delivers the new content notification to a SMT
 
 
 If deep history of notifications is needed or desired, it could live here.
-HTTP daemon
+
+### HTTP daemon
 A lightweight HTTP daemon provides HTTP API services for multiple repositories and multiple subscription stores (typically all of both on a machine). On startup this daemon establishes PSHB subscriptions to remote repositories for all subscriptions held by the local repositories and checks for missed notifications. Once started the daemon will answer content requests from PSHB hubs as well as serving a browser UI. User authentication is handled here. This daemon is also stateless - several can be run in parallel for HA or performance.
-SMTP
+###SMTP
 Similar to HTTP, but probably no daemon at all - just a handle for procmail. Routes incoming notifications from subscribed SMTP-only systems (e.g. bugzilla) into a PSHB handler that will poll and update the replicated content appropriately.
-UI
-Browser UI
+
+## UI
+
+### Browser UI
 handlebars templates, RESTful API to the server, JSON representation of data. Atom feeds for most everything. Server side render static views for search engines. Websockets to notify clients of interesting events. New browser sessions will establish websocket subscriptions for everything the user is subscribed to, and ask for an initial push of interesting content.
-SMTP UI
+### SMTP UI
 Don’t know that we’ll bother beyond notifications (and thats not a certainty)... But if we do, it would be a responsibility for the incoming SMTP handler // SMTP notifier.
-CLI
+### CLI
 Local client operations form the core of the system - and may perhaps even be the mechanism that the HTTP daemon builds on [keeping things very separated into clean layers].
 Init a project
 Add a symptom
