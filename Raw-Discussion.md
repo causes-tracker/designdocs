@@ -1,25 +1,36 @@
-I’ve dumped the notes from bug tracker yammer on #subunit here. My plan is to edit it (maybe into something LEP-like?) and then decide whether I want to do anything further -- jml
-Why?
+# Raw discussion
+
+jml dumped the notes from bug tracker yammer on #subunit here.  Since then, it's been added to in lots of ways by lots of people.
+
+## Why?
+
 After using Launchpad’s bug tracker, we dislike using other bug trackers. But Launchpad’s bug tracker is ugly, mostly unmaintained and tied up with the rest of Launchpad. Maybe it’s a good idea to make another bug tracker.
 
-
 The bug tracker does seem to be one of the things that Launchpad got right.
-Assumptions
+
+## Assumptions
+
 * Launchpad is not being usefully maintained
 * Launchpad’s UI is terrible
 * Extracting Launchpad’s bug tracker into a separate thing and making it good is more work than making a new good thing
 * We can make something useful in our spare time, despite us all having interesting day jobs
-Relevant
+
+## Relevant
+
 mpt's spec for an issue tracker
-Questions
+
+## Questions
 * Are cross-project bugs actually a desirable feature?
 * Are distributions too idiosyncratic for a generalized bug tracker? If we were to do this work, would we care about distros?
 * What more assumptions?
 * What’s the minimum viable product?
 * What about kanban? Is it even relevant?
 * What would a bug tracker designed by David Allen (GTD) look like?
-Braindump
-<lifeless>
+
+# Braindump
+
+## lifeless
+
 * API, callbacks (whatever sort - pshb, webhooks, don't care)
 * evidence-based model
    * Observations are from users
@@ -39,7 +50,9 @@ Braindump
    * multiple long lived branches in the bug tracker model
    * subcomponents and other highly refined metadata
       * if it’s big enough to need a structured marker, it’s big enough to be its own project.
-<jelmer>
+
+## jelmer
+
 * custom statuses
 * distributed (but none of the current ones can do it)
    * don’t version all bug data as if it were code
@@ -50,7 +63,8 @@ Braindump
 * the site should be one way of presenting and interacting that data
    * they should not get to own it
    * not be the exclusive way to interact with it like they are with bug data at the moment
-<jml>
+
+## jml
 * mass editing
 * keyboard bindings
 * fewer statuses (as per mpt)
@@ -69,13 +83,13 @@ Braindump
 * Keyboard bindings
 * Mass editing
 * API with callbacks
-<poolie>
+
+## poolie
 * many (probably most) bugs won’t get fixed; so avoid requiring or encouraging developers to spend most time on them, or having them get in the way.
 * bugs should decay from view if they are not fixed, but still make it possible to dig out old bugs
 * good automatic dupe-finding, including retrospectively or interactively hunting for dupes
 
-
-<ttx>
+## <ttx>
 * Looking into a new task tracker to support OpenStack needs (features + bugs)
 * Having multiple tasks (project + branch combination) within a single “story” is very useful to us
 * Still interested in getting feature tracking in the same framework, but not as a wishlist importance bug. Features can benefit from tasks too (tasks which can affect multiple projects, and supporting multiple items with the same project + branch combination to emulate work items)
@@ -85,7 +99,8 @@ Braindump
 * More at https://wiki.openstack.org/wiki/Task_Tracker_Requirements
 
 
-Work notes
+# Work notes
+
 * Pay someone to do visuals?
 * lifeless will do the guts if someone else does the HTTP
 * At least want some people in group who care about upper layers / front-end
@@ -151,7 +166,7 @@ A user says 'this is fix released' but you treat that as input to 'what users th
 
 Raw conversations
 
-
+```
 [14:41:24] <jelmer> I still really appreciate the Launchpad bug tracker UI; GitHub's is terrible, and so are most others, especially bugzilla
 [14:46:05] <jml> yeah
 [14:46:10] <jml> it could definitely use some love though
@@ -205,12 +220,12 @@ Raw conversations
 [20:44:02] <lifeless> Dunno :)
 [20:44:15] <lifeless> There is a long running angst between big teams and small super effective teams.
 [20:47:46] <jelmer> fair enough :)
+```
 
 
 
 
-
-
+```
 [10:31:45] <jml> I might start migrating my interesting +junk to github today
 [10:35:42] <jelmer> jml: what are you going to do for bugs?
 [10:36:00] <jml> jelmer: what bugs?
@@ -248,8 +263,9 @@ Raw conversations
 [10:52:11] <jml> jelmer: I'd like to hit some of the bug statuses with an axe of great hitting
 [10:52:15] <lifeless> but the design workflow and resources are daft so little projress
 [10:52:23] <jml> vaguely https://dev.launchpad.net/IssueTracker
+```
 
-
+```
 [10:52:28] <lifeless> yah
 [10:52:53] <jml> heh.
 [10:53:03] <lifeless> So, IMO, LP's biggest innovation bug tracker wise is - once setup - getting out of the way of devs nearly all the time
@@ -329,8 +345,9 @@ Raw conversations
 [11:12:52] <lifeless> jelmer: maybe
 [11:13:02] <lifeless> jelmer: but consider squid
 [11:13:18] <lifeless> jelmer: we have code to MITM SSL connections in it
+```
 
-
+```
 [11:13:51] <lifeless> jelmer: if as a project we had said 'we consider this immoral and won't support it'
 [11:14:05] <lifeless> jelmer: then it might be per branch, for-all project official branches
 [11:14:25] <lifeless> jelmer: and perhaps even 'for all branches hosted on project servers'
@@ -367,8 +384,9 @@ Raw conversations
 [11:23:59] <lifeless> jelmer: so, consider a project member. The project likely has some a-priori agenda (whether commercial like LP itself, or opinionated, like testtools)
 [11:24:15] <jml> where I generally don't bother tracking priorities, but instead make it so I can easily retrieve a list of things to do for a particular context and/or goal
 [11:24:31] <lifeless> jelmer: a project member may well want to track both personal interests and project interests.
+```
 
-
+```
 [11:24:50] <lifeless> [NB: I'm not strictly talking priorities here.]
 [11:25:21] <lifeless> jelmer: now consider a user. They probably don't want to track anything, but they want to know if *anyone* has decided they will do this thing soon.
 [11:25:48] <lifeless> jelmer: so they want [queue depth in days for this bug to be what someone is hacking on]
@@ -397,8 +415,9 @@ Raw conversations
 [11:32:22] <lifeless> jml: thanks, will do.
 [11:32:45] <lifeless> anyhow, rambling.
 [11:33:06] <lifeless> If I was to hack on a bug tracker again, I think I'd do a pure local storage one
+```
 
-
+```
 [11:33:13] <lifeless> and let other folk do HTTP and HTML bindings.
 [11:33:44] <lifeless> I have enough on my TODO without adding *another* web app.
 [11:33:51] <jml> :)
@@ -422,7 +441,7 @@ Raw conversations
 [11:40:55] <jml> and what's our success metric
 [12:15:09] <jelmer> who are going to be early adopters? testtools?
 [12:21:20] <jml> I guess.
-
+```
 
 
 
