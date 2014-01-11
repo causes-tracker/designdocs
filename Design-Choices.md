@@ -27,20 +27,3 @@ lets us use PSHB and be efficiently indexed by google etc. Yes its a little more
 
 # PSHB for events
 we want push to clients, which is most sanely websockets these days. Avoid making the server stateful by using a dedicated websocket notification server subscribed to the client’s topics via pshb.
-
-# Discussion
-
-[a]Jonathan Lange:
-What exactly is this document for?
-
-
-Is it choices that have been made? choices that need to be made? things we've disagreed about? things we can imagine other people disagreeing about?
-
-
-Coming into this late, there seems to be a chunk of missing context.
-________________
-robertc:
-I intended this document to capture the design choices we've made/are making free of the more extensive and conceptual analysis in the manifesto doc : this is something implementors should be referring to
-________________
-Jonathan Lange:
-Added a purpose thingummy.
