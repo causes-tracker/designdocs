@@ -65,6 +65,7 @@ mpt's spec for an issue tracker
    * not be the exclusive way to interact with it like they are with bug data at the moment
 
 ## jml
+
 * mass editing
 * keyboard bindings
 * fewer statuses (as per mpt)
@@ -85,11 +86,12 @@ mpt's spec for an issue tracker
 * API with callbacks
 
 ## poolie
+
 * many (probably most) bugs won’t get fixed; so avoid requiring or encouraging developers to spend most time on them, or having them get in the way.
 * bugs should decay from view if they are not fixed, but still make it possible to dig out old bugs
 * good automatic dupe-finding, including retrospectively or interactively hunting for dupes
 
-## <ttx>
+## ttx
 * Looking into a new task tracker to support OpenStack needs (features + bugs)
 * Having multiple tasks (project + branch combination) within a single “story” is very useful to us
 * Still interested in getting feature tracking in the same framework, but not as a wishlist importance bug. Features can benefit from tasks too (tasks which can affect multiple projects, and supporting multiple items with the same project + branch combination to emulate work items)
@@ -106,29 +108,28 @@ mpt's spec for an issue tracker
 * At least want some people in group who care about upper layers / front-end
 
 
-Edited conversations
-WONTFIX, priorities, how bugs relate to code, federation
+# Edited conversations
 
+## WONTFIX, priorities, how bugs relate to code, federation
 
 WONTFIX is not a valid bug status for open source projects.  At least, not the way LP defines it.
 
-
 There is a WONTFIX, in the sense that I can say "I will not merge a change that meets this use case ever."
 
-
 Federation is one answer to that tension – “oh yeah, well I am publishing a tree that does it” – but it’s not a very satisfying answer.
-Tie WONTFIX to code?
 
+Tie WONTFIX to code?
 
 Perhaps WONTFIX is something that's specific to a particular branch of the code, much like a particular branch can contain a fix for a bug?
 
-
 Perhaps not. We have code to MITM SSL connections in Squid. If as a project we had said “we consider this immoral and won't support it”, then it might be per branch, for-all project official branches, and perhaps even 'for all branches hosted on project servers'. Making WONTFIX specific to code would require speaking about larger entities than just simple branches, which complicates things.
 
-
 Bug reports might talk about a branch, or a project, or an effort – it's fluffy. Is binding them together necessary to talk about WONTFIX? No.
+
 Track everyone’s priorities
+
 Perhaps then we should explicitly track everyone’s priorities and present an aggregate?
+
 Interesting actors in a bug report
 * a user
 * some users
@@ -162,9 +163,7 @@ Note that a few nice things fall out of this, if you don't consider showing ever
 A user says 'this is fix released' but you treat that as input to 'what users think' aggregate data rather than a change on the core.
 
 
-
-
-Raw conversations
+# Raw conversations
 
 ```
 [14:41:24] <jelmer> I still really appreciate the Launchpad bug tracker UI; GitHub's is terrible, and so are most others, especially bugzilla
@@ -204,10 +203,10 @@ Raw conversations
 [15:15:32] <jml> secondarily a UI
 [15:15:53] <jml> jelmer: I'm very interested in this conversation, but I have to go :\
 [15:16:16] <jelmer> jml: likewise, we'll pick it up some other time :)
+```
 
 
-
-
+```
 [10:11:24] * jml mutters something about launchpad
 [10:11:35] <lifeless> I've been using gerrit recently.
 [10:11:44] <lifeless> Much less usable in some ways. Better in others.
@@ -230,7 +229,7 @@ Raw conversations
 [10:35:42] <jelmer> jml: what are you going to do for bugs?
 [10:36:00] <jml> jelmer: what bugs?
 [10:36:17] <jml> my software is perfect.
-[[a]10:36:21] <jelmer> jml: in projects you're migrating to github?
+[10:36:21] <jelmer> jml: in projects you're migrating to github?
 [10:36:25] <jelmer> heh
 [10:36:28] <jml> I have tests to prove it and everything.
 [10:36:33] <jelmer> jml: I guess you don't need version control then either ? :P
@@ -445,7 +444,8 @@ Raw conversations
 
 
 
-mbp says:
+## mbp says:
+
 Some of the Launchpad bug tracker and the Ubuntu crash tracker help of this, but I would like to see much more done in open source bug trackers towards this:
 
 
@@ -457,7 +457,8 @@ Some of the Launchpad bug tracker and the Ubuntu crash tracker help of this, but
 - show an automatic estimate of the odds a bug will be fixed
 
 
-lifeless:
+## lifeless:
+
 I spoke with stewart and devananda at LCA about this; they like the basic idea. Some things from them:
 - releases and backports do matter
 - very interested in being able to handle crashdumps.
@@ -467,7 +468,8 @@ I spoke with stewart and devananda at LCA about this; they like the basic idea. 
 - fix (description), relates to symptom, series.
 
 
-jelmer:
+## jelmer:
+
 Had a discussion with a handful of folks about distributed bug trackers at GSoC 2013. While there are a handful of distributed bug trackers out there, nobody has seen any that they like.
 
 
@@ -510,10 +512,8 @@ History should be kept per bug, so it possible/easier to:
 Several people mentioned they would like the ability to interact with external bug trackers (e.g. github) as a way to have a local view on all their bugs in all their projects.
 I think that’s useful, but would like to avoid the complication of having to support the superset of all bug trackers. Perhaps just a way of importing data from external bug trackers is sufficient - it’s important that it doesn’t make the core more complex.
 
+Martin Pool adds, "from andyfitz's talk, a hierarchy of needs for design: function> reliability > usability > pleasure"
 
-[c]
-[a]Martin Pool:
-:D
 [b]robertc:
 I think triage as Launchpad does it now is useful, not as Ubuntu does it. [which is to say, encourage devs to look briefly at all reports to identify zomg things].
 ________________
@@ -543,5 +543,4 @@ Oh, I certainly agree this can waste user time - and I think that needs the
 same thing.  Somehow communicate to users what kind of bug is very unlikely
 to every be fixed, so they can avoid wasting their time filing it.  I think
 tens of percent of bugs in Launchpad were a waste of time to even file.
-[c]Martin Pool:
-from andyfitz's talk, a hierarchy of needs for design: function> reliability > usability > pleasure
+
