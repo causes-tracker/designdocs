@@ -1,11 +1,7 @@
 # Causes — Design Documentation
 
-Causes is a bug tracker designed to free developers from the tedium of manual bug gardening.
-It models defects as the interaction between four entities: a **project timeline**, **signs** (machine-observed anomalies), **symptoms** (human-reported issues), and **plans** (intended changes).
-See [Manifesto.md](Manifesto.md) for the full concept.
-
-This directory contains all design documentation.
-No implementation code lives here yet.
+This directory contains all design documentation for the Causes project.
+No implementation code lives here.
 
 ## Documents
 
@@ -19,13 +15,7 @@ No implementation code lives here yet.
 
 ## Quick orientation
 
-* **New to the project?** Read [Manifesto.md](Manifesto.md) then [Design-Choices.md](Design-Choices.md).
-* **Want to understand why a decision was made?** Check [Decisions.md](Decisions.md).
-* **Curious about the original discussions?** See [Raw-Discussion.md](Raw-Discussion.md).
-* **Want to contribute?** See [Contributing.md](Contributing.md).
-
-## Status
-
-Design-only.
-Implementation has not started.
-The language and stack are not yet decided — see the open ADR in [Decisions.md](Decisions.md).
+- **New to the project?** Read [Manifesto.md](Manifesto.md) then [Design-Choices.md](Design-Choices.md).
+- **Want to understand why a decision was made?** Check [Decisions.md](Decisions.md).
+- **Curious about the original discussions?** See [Raw-Discussion.md](Raw-Discussion.md).
+- **Want to contribute?** See [Contributing.md](Contributing.md).
