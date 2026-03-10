@@ -1,4 +1,10 @@
-# Raw discussion
+# Raw Discussion (Historical)
+
+> **Note:** This file is historical. It captures raw braindumps and IRC logs from design discussions in 2012–2013. It has not been edited for clarity or correctness.
+> Decisions extracted from this material live in [Decisions.md](Decisions.md).
+> The canonical design documentation is in [Manifesto.md](Manifesto.md) and [Design-Choices.md](Design-Choices.md).
+
+---
 
 jml dumped the notes from bug tracker yammer on #subunit here.  Since then, it's been added to in lots of ways by lots of people.
 

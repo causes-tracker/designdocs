@@ -1,27 +1,91 @@
-This document aims to capture our thinking around the more technical design choices of Causes, freeing up the manifesto to focus on more conceptual analysis. We expect implementers to refer to this document.
+# Design Choices
 
-# Centralised / Distributed / Replicated ?
+This document captures the technical design decisions for Causes, freeing [Manifesto.md](Manifesto.md) to focus on conceptual analysis.
+Implementers should read both.
+For the rationale behind each decision, see [Decisions.md](Decisions.md).
 
-Distributed and replicated : some data sets like crash reports will be too large to want to replicate willy-nilly. Others like current project plans will be extremely useful offline. So support both. In particular the ‘I am a private company’ use case is actually a great exemplar for many subtle things we’ll need.
+## Data distribution: centralised / distributed / replicated
 
-# No hard dependencies on specialised web services
+Distributed and replicated.
+Some data sets (e.g. crash reports) may be too large to replicate everywhere; others (current project plans) are highly useful offline.
+The architecture supports both.
+The private-company use case — full local mirror of a public project's bugs, with selective upstream publishing — is a good test of the design.
 
-We can use anything for which completely offline implementations exist. Anything else would prevent running private sites.
+See [ADR-001](Decisions.md#adr-001-distributed-and-replicated-data-model).
 
-# The signs/symptoms/plans split?
+## No hard dependencies on hosted-only web services
 
-A bit of a strong-feeling thing. The signs/symptoms split is intended to separate out things that are human focused, where you need discussion and interrogation, from things that are machine orientated, where mass data analysis and automation rule. It may be a very soft split when looking at code and data models, who knows. One particular aspect where it may be different is the volume (lots of symptoms, relatively few signs); the rigour(machine gathered, human wrote); and the discussion (most symptoms will be auto aggreggated and not discussed at all.
+We can use anything for which a completely offline, self-hostable implementation exists.
+Anything else would prevent running private sites.
 
-The plans split is intended to solve the friction that arises when a report from a user - a symptom - is marked as a duplicate of another report from a different user not because they are the same, but because the same proposed change would fix them both. (This happens a lot). Then, if the proposed change is not actioned (due to resources, or code review feedback or …) the project has lost data - what were two different issues that could be used to triangulate are now one, and if the change actually used to solve one of them doesn’t solve both, you have an unhappy user.
+See [ADR-003](Decisions.md#adr-003-no-hard-dependencies-on-proprietary-or-hosted-only-web-services).
 
-# Web UI layer
+## The signs / symptoms / plans split
 
-Should be uncontentious, but - hell, see any modern web design argument. js. websockets.
+A strongly-held design principle.
+Signs separate machine-oriented data (where mass analysis and automation rule) from symptoms (human-reported, discussion-heavy) and plans (developer proposals for change).
+The split may be soft at the code level but is important at the data model and UI level.
 
-# Atom
+Key motivation: duplicating two symptoms because they share a fix loses triangulation data if the fix is later found to address only one.
+Plans decouple "what users experience" from "what we intend to change".
 
-Lets us use [PSHB](https://code.google.com/p/pubsubhubbub/) and be efficiently indexed by google etc. Yes it's a little more ugly than webhooks but unlike webhooks it lets anyone watch anything via PSHB.
+See [ADR-002](Decisions.md#adr-002-signs--symptoms--plans-separation).
 
-# PSHB for events
+## Web UI layer
 
-We want push to clients, which is most sanely websockets these days. Avoid making the server stateful by using a dedicated websocket notification server subscribed to the client’s topics via PSHB.
+A modern JavaScript front-end consuming the REST/JSON API.
+The original design specified Handlebars templates; current alternatives include React, Vue, Svelte, and HTMX.
+Choice should follow the language/stack decision (see [ADR-008](Decisions.md#adr-008-language--stack--open)).
+
+Requirements regardless of framework:
+
+- Server-side rendering of static views for search engine indexing
+- Websocket or Server-Sent Events (SSE) for real-time client updates
+- Accessible markup (WCAG 2.1 AA minimum)
+
+## Atom feeds
+
+Atom feeds remain a valid choice for content syndication and allow efficient indexing by search engines.
+[JSON Feed](https://www.jsonfeed.org/) is a simpler alternative if Atom's XML is a maintenance burden.
+
+## Push notifications: WebSub
+
+[WebSub](https://www.w3.org/TR/websub/) (the W3C standardisation of the original PubSubHubbub/PSHB protocol, W3C Recommendation 2018) provides server-to-server push over HTTP.
+It allows any subscriber to watch any feed without prior bilateral registration.
+
+**Note:** WebSub adoption outside the IndieWeb community is limited.
+For server-to-server push, webhooks are more widely understood and implemented.
+Review whether WebSub is worth the complexity versus a simpler webhook-based notification system.
+See [ADR-007](Decisions.md#adr-007-push-notifications-via-websub-formerly-pubsubhubbub).
+
+For browser clients, a stateless proxy daemon subscribes to WebSub (or polls) and delivers updates via websockets or SSE.
+This keeps the HTTP API server stateless.
+
+## API specification
+
+The HTTP API is RESTful with JSON representations.
+The API spec format is not yet decided; [OpenAPI 3.x](https://spec.openapis.org/oas/v3.1.0) is recommended.
+See [ADR-009](Decisions.md#adr-009-api-specification-format--open).
+
+## Security
+
+No security model was defined in the original design.
+This must be resolved before any networked deployment.
+Key areas: authentication (OAuth 2.0 / OIDC for browsers; API tokens for CLI), authorisation (role-based ACLs per repository), HTTPS everywhere, and a private disclosure workflow for security vulnerabilities.
+See [ADR-010](Decisions.md#adr-010-security-model--open).
+
+## Deployment
+
+The original design assumed operators would deploy from source.
+The current baseline expectation is:
+
+- **Local dev:** Docker Compose (one command to start all services)
+- **Production:** OCI container images; Docker or Kubernetes depending on scale
+- **Minimal/single-node:** single binary (if the language choice supports it) or a simple `systemd` unit
+
+No external managed services should be required for a basic self-hosted deployment.
+
+## Language and stack
+
+Not yet decided.
+See [ADR-008](Decisions.md#adr-008-language--stack--open).
