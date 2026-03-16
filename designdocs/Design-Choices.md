@@ -29,13 +29,13 @@ The split may be soft at the code level but is important at the data model and U
 Key motivation: duplicating two symptoms because they share a fix loses triangulation data if the fix is later found to address only one.
 Plans decouple "what users experience" from "what we intend to change".
 
-See [ADR-002](Decisions.md#adr-002-signs--symptoms--plans-separation).
+See [ADR-002](Decisions.md#adr-002-signs-symptoms-plans-separation).
 
 ## Web UI layer
 
 A modern JavaScript front-end consuming the REST/JSON API.
 The original design specified Handlebars templates; current alternatives include React, Vue, Svelte, and HTMX.
-Choice should follow the language/stack decision (see [ADR-008](Decisions.md#adr-008-language--stack--open)).
+Choice should follow the language/stack decision (see [ADR-008](Decisions.md#adr-008-language-stack-open)).
 
 Requirements regardless of framework:
 
@@ -65,14 +65,14 @@ This keeps the HTTP API server stateless.
 
 The HTTP API is RESTful with JSON representations.
 The API spec format is not yet decided; [OpenAPI 3.x](https://spec.openapis.org/oas/v3.1.0) is recommended.
-See [ADR-009](Decisions.md#adr-009-api-specification-format--open).
+See [ADR-009](Decisions.md#adr-009-api-specification-format-open).
 
 ## Security
 
 No security model was defined in the original design.
 This must be resolved before any networked deployment.
 Key areas: authentication (OAuth 2.0 / OIDC for browsers; API tokens for CLI), authorisation (role-based ACLs per repository), HTTPS everywhere, and a private disclosure workflow for security vulnerabilities.
-See [ADR-010](Decisions.md#adr-010-security-model--open).
+See [ADR-010](Decisions.md#adr-010-security-model-open).
 
 ## Deployment
 
@@ -88,4 +88,4 @@ No external managed services should be required for a basic self-hosted deployme
 ## Language and stack
 
 Not yet decided.
-See [ADR-008](Decisions.md#adr-008-language--stack--open).
+See [ADR-008](Decisions.md#adr-008-language-stack-open).

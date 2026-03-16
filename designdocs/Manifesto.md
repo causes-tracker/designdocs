@@ -352,7 +352,7 @@ Server-side rendering of static views for search engines.
 Websockets or SSE to notify clients of interesting events.
 New browser sessions establish subscriptions for everything the user is subscribed to, and ask for an initial push of interesting content.
 
-Framework choice is TBD (see [ADR-008](Decisions.md#adr-008-language--stack--open)).
+Framework choice is TBD (see [ADR-008](Decisions.md#adr-008-language-stack-open)).
 Original design specified Handlebars templates; current alternatives include HTMX, React, Vue, and Svelte.
 
 #### SMTP UI
@@ -384,9 +384,9 @@ Operations:
 
 The following were not addressed in the original 2013 design and need decisions before implementation:
 
-- **Language and stack** — see [ADR-008](Decisions.md#adr-008-language--stack--open)
-- **Security model** (authentication, authorisation, private disclosure workflow) — see [ADR-010](Decisions.md#adr-010-security-model--open)
-- **API specification format** (recommend OpenAPI 3.x) — see [ADR-009](Decisions.md#adr-009-api-specification-format--open)
+- **Language and stack** — see [ADR-008](Decisions.md#adr-008-language-stack-open)
+- **Security model** (authentication, authorisation, private disclosure workflow) — see [ADR-010](Decisions.md#adr-010-security-model-open)
+- **API specification format** (recommend OpenAPI 3.x) — see [ADR-009](Decisions.md#adr-009-api-specification-format-open)
 - **Deployment** (Docker Compose for local dev; OCI containers for production) — see [Design-Choices.md](Design-Choices.md#deployment)
 - **CI/CD pipeline** (GitHub Actions: lint, test, build, publish container image)
 - **Data schema** — the four entity types are described in prose; a concrete schema definition is needed

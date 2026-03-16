@@ -50,7 +50,7 @@ All jobs must pass before a PR can be merged.
 ## Development environment (implementation — not yet started)
 
 > **Note:** No implementation code exists yet.
-> The language and stack are not decided (see [ADR-008](Decisions.md#adr-008-language--stack--open)).
+> The language and stack are not decided (see [ADR-008](Decisions.md#adr-008-language-stack-open)).
 > This section will be filled in once a stack is chosen.
 
 Intended setup:

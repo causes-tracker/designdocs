@@ -1,0 +1,16 @@
+site_name: Causes
+site_description: A bug tracker built to free developers from the tedium of manual bug gardening.
+docs_dir: designdocs
+
+theme:
+  name: material
+  palette:
+    scheme: default
+
+nav:
+  - Overview: README.md
+  - Manifesto: Manifesto.md
+  - Design Choices: Design-Choices.md
+  - Decisions: Decisions.md
+  - Contributing: Contributing.md
+  - Raw Discussion: Raw-Discussion.md
