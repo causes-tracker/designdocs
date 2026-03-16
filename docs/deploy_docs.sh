@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
-# Deploys the docs site to GitHub Pages via mkdocs gh-deploy.
+# Runs mkdocs from the correct working directory.
 #
-# Must be run via `bazel run //docs:deploy_docs` so that
-# BUILD_WORKSPACE_DIRECTORY is set by Bazel.
+# When BUILD_WORKSPACE_DIRECTORY is set (bazel run), uses the actual workspace
+# docs/ directory so git is available for gh-deploy.
+# When called without BUILD_WORKSPACE_DIRECTORY (e.g. from docs_test), uses
+# the runfiles docs/ directory so designdocs data deps are reachable.
+#
+# Default: bazel run //docs:deploy_docs  →  gh-deploy --force
+# Test:    called by docs_test with explicit mkdocs args
 set -euo pipefail
 
 # Standard Bazel 3-way runfiles init — works in sh_test (RUNFILES_DIR set)
@@ -22,8 +27,18 @@ else
   exit 1
 fi
 
-# Bazel sets BUILD_WORKSPACE_DIRECTORY to the workspace root when using
-# `bazel run`. mkdocs must run from there so relative paths in mkdocs.yml
-# (e.g. docs_dir: ../designdocs) resolve correctly.
-cd "$BUILD_WORKSPACE_DIRECTORY"
-exec "$(rlocation _main/docs/mkdocs)" gh-deploy --force
+MKDOCS=$(rlocation _main/docs/mkdocs)
+
+# Use the actual workspace docs/ when running via `bazel run` so git works.
+# Fall back to the runfiles docs/ when called from docs_test (no workspace).
+if [[ -n "${BUILD_WORKSPACE_DIRECTORY:-}" ]]; then
+  cd "$BUILD_WORKSPACE_DIRECTORY/docs"
+else
+  cd "$(dirname "$(rlocation _main/docs/mkdocs.yml)")"
+fi
+
+if [[ $# -eq 0 ]]; then
+  exec "$MKDOCS" gh-deploy --force
+else
+  exec "$MKDOCS" "$@"
+fi

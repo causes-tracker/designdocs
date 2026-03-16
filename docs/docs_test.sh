@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-# Smoke-tests the docs build by running mkdocs build --strict against the
-# real content. Fails if any link is broken or the theme is misconfigured.
-#
-# Uses the same runfiles mechanism as deploy_docs.sh so failures here
-# reproduce deploy failures before they reach CI.
+# Smoke-tests the docs build by calling deploy_docs with mkdocs build --strict.
+# By calling deploy_docs directly this test exercises the same setup logic as
+# the real deploy, so regressions in deploy_docs.sh are caught before CI.
 #
 # Run with: bazel test //docs:docs_test
 set -euo pipefail
@@ -25,12 +23,8 @@ else
   exit 1
 fi
 
-MKDOCS=$(rlocation _main/docs/mkdocs)
-MKDOCS_YML=$(rlocation _main/docs/mkdocs.yml)
+DEPLOY=$(rlocation _main/docs/deploy_docs)
 TMPDIR_TEST=$(mktemp -d)
 trap 'rm -rf "$TMPDIR_TEST"' EXIT
 
-# cd to the docs runfiles dir so docs_dir: ../designdocs resolves to the
-# designdocs content that was declared as a data dep.
-cd "$(dirname "$MKDOCS_YML")"
-"$MKDOCS" build --strict --config-file=mkdocs.yml --site-dir="$TMPDIR_TEST/site"
+"$DEPLOY" build --strict --site-dir="$TMPDIR_TEST/site"

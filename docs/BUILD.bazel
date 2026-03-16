@@ -31,10 +31,12 @@ genrule(
     tools = [":mkdocs"],
 )
 
-# Smoke-test the docs build. Run with: bazel test //docs:docs_test
-sh_test(
-    name = "docs_test",
-    srcs = ["docs_test.sh"],
+# Deploy docs to GitHub Pages.
+# Run with:  bazel run //docs:deploy_docs
+# Also called by docs_test with explicit mkdocs args (build --strict).
+sh_binary(
+    name = "deploy_docs",
+    srcs = ["deploy_docs.sh"],
     data = [
         ":mkdocs",
         "//:designdocs",
@@ -43,13 +45,13 @@ sh_test(
     ],
 )
 
-# Deploy docs to GitHub Pages.
-# Run with: bazel run //docs:deploy_docs
-sh_binary(
-    name = "deploy_docs",
-    srcs = ["deploy_docs.sh"],
+# Smoke-test the docs build. Run with: bazel test //docs:docs_test
+# Calls deploy_docs directly so changes to deploy_docs.sh are covered.
+sh_test(
+    name = "docs_test",
+    srcs = ["docs_test.sh"],
     data = [
-        ":mkdocs",
+        ":deploy_docs",
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
