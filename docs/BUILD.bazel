@@ -1,4 +1,5 @@
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load(
     "@rules_python//python/entry_points:py_console_script_binary.bzl",
     "py_console_script_binary",
@@ -30,10 +31,25 @@ genrule(
     tools = [":mkdocs"],
 )
 
+# Smoke-test the docs build. Run with: bazel test //docs:docs_test
+sh_test(
+    name = "docs_test",
+    srcs = ["docs_test.sh"],
+    data = [
+        ":mkdocs",
+        "//:designdocs",
+        "mkdocs.yml",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
 # Deploy docs to GitHub Pages.
 # Run with: bazel run //docs:deploy_docs
 sh_binary(
     name = "deploy_docs",
     srcs = ["deploy_docs.sh"],
-    data = [":mkdocs"],
+    data = [
+        ":mkdocs",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
 )

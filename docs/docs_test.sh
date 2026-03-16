@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# Deploys the docs site to GitHub Pages via mkdocs gh-deploy.
+# Smoke-tests the docs build by running mkdocs build --strict against the
+# real content. Fails if any link is broken or the theme is misconfigured.
 #
-# Must be run via `bazel run //docs:deploy_docs` so that
-# BUILD_WORKSPACE_DIRECTORY is set by Bazel.
+# Uses the same runfiles mechanism as deploy_docs.sh so failures here
+# reproduce deploy failures before they reach CI.
+#
+# Run with: bazel test //docs:docs_test
 set -euo pipefail
 
 # Standard Bazel 3-way runfiles init — works in sh_test (RUNFILES_DIR set)
@@ -22,8 +25,12 @@ else
   exit 1
 fi
 
-# Bazel sets BUILD_WORKSPACE_DIRECTORY to the workspace root when using
-# `bazel run`. mkdocs must run from there so relative paths in mkdocs.yml
-# (e.g. docs_dir: ../designdocs) resolve correctly.
-cd "$BUILD_WORKSPACE_DIRECTORY"
-exec "$(rlocation _main/docs/mkdocs)" gh-deploy --force
+MKDOCS=$(rlocation _main/docs/mkdocs)
+MKDOCS_YML=$(rlocation _main/docs/mkdocs.yml)
+TMPDIR_TEST=$(mktemp -d)
+trap 'rm -rf "$TMPDIR_TEST"' EXIT
+
+# cd to the docs runfiles dir so docs_dir: ../designdocs resolves to the
+# designdocs content that was declared as a data dep.
+cd "$(dirname "$MKDOCS_YML")"
+"$MKDOCS" build --strict --config-file=mkdocs.yml --site-dir="$TMPDIR_TEST/site"
