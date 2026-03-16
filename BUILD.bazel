@@ -1,1 +1,7 @@
+load("@gazelle//:def.bzl", "gazelle")
+
 package(default_visibility = ["//visibility:public"])
+
+# Run with: bazel run //:gazelle
+# Generates and updates BUILD files for Go targets.
+gazelle(name = "gazelle")
