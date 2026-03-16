@@ -164,3 +164,39 @@ Areas to define:
 - Authorisation: role-based (user / developer / project admin) with per-repository ACLs
 - Transport: HTTPS mandatory for any networked deployment
 - Security disclosure workflow: private plans/symptoms visible only to authorised parties until disclosed
+
+---
+
+## ADR-011: Build system — Bazel + BuildBuddy
+
+**Status:** Accepted
+
+**Context:** The repository will contain at least three distinct build targets: a TypeScript web UI, a CLI (command-line API client), and a backend server in a memory-safe systems language (Go or Rust, per ADR-008).
+Builds must work efficiently on developer machines (Windows, macOS, Linux) and in CI (GitHub Actions).
+Remote caching is required to keep CI fast as the codebase grows.
+The system must remain usable by both human contributors and AI coding agents.
+
+Options evaluated: Bazel + BuildBuddy, Buck2, Nx, Moon, Earthly, Gradle.
+Earthly was abandoned by its maintainers in mid-2025.
+Gradle has no genuine build-graph support for Go or Rust.
+Buck2 has a small external community and no managed caching offering.
+Moon (v2.0, February 2026) has first-class polyglot support but only ~79 contributors versus Bazel's 1000+; too new for a project that values stability.
+Nx is well-suited to TypeScript-primary monorepos but has no Rust plugin as of early 2026.
+
+**Decision:** Use [Bazel](https://bazel.build) as the build system with [BuildBuddy](https://www.buildbuddy.io) for remote caching and build observability.
+Use [Bazelisk](https://github.com/bazelbuild/bazelisk) to pin and auto-install the correct Bazel version — contributors never install Bazel directly.
+Use [Gazelle](https://github.com/bazel-contrib/bazel-gazelle) to auto-generate and maintain `BUILD` files for Go targets (eliminates the main maintenance burden for Go).
+Use `rules_ts` for TypeScript and `rules_rust` for Rust if Rust is chosen (ADR-008).
+
+**Windows strategy:** `rules_rust` disables its own Windows CI tests due to lack of maintainer expertise.
+Windows developers building Rust targets must use a Dev Container (VSCode Remote Containers or GitHub Codespaces) which provides a Linux environment.
+Windows developers working only on TypeScript targets may build natively.
+If the backend language decision (ADR-008) lands on Go rather than Rust, the Windows constraint disappears — `rules_go` is CI-tested on Windows.
+
+**Remote caching:** BuildBuddy free tier (10 users, 100 GB cache transfer/month, up to 80 remote execution cores) is sufficient for early development.
+Self-hosted `bazel-remote` is an alternative if the free tier is outgrown or data residency is a concern.
+
+**Consequences:** Bazel's hermetic, reproducible builds make CI reliable and agent-friendly — any machine produces identical outputs.
+BUILD file authoring has a learning curve; Gazelle reduces this significantly for Go.
+`MODULE.bazel` (bzlmod) is the current dependency management approach; some rulesets still have rough edges with bzlmod.
+If scale demands it in future (remote execution, very large codebase), the same Bazel infrastructure scales without a migration.
