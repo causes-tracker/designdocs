@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Bazelisk
         uses: bazel-contrib/setup-bazel@0.18.0
@@ -31,7 +31,7 @@ jobs:
     needs: build
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Bazelisk
         uses: bazel-contrib/setup-bazel@0.18.0
