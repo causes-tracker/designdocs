@@ -1,3 +1,7 @@
+# Bazel
+/bazel-*
+.bazelrc.user
+
 dist
 cabal-dev
 *.o

@@ -1,0 +1,7 @@
+# BuildBuddy remote cache and build event streaming for local dev.
+# Copy this file to .bazelrc.user and replace YOUR_KEY_HERE with your API key.
+# Get your API key from https://app.buildbuddy.io/settings/org/api-keys
+build --remote_cache=grpcs://remote.buildbuddy.io
+build --remote_header=x-buildbuddy-api-key=YOUR_KEY_HERE
+build --bes_backend=grpcs://remote.buildbuddy.io
+build --bes_results_url=https://app.buildbuddy.io/invocation/

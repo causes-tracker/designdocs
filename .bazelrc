@@ -1,0 +1,19 @@
+# Bazel 7+ default; explicit for clarity
+common --enable_bzlmod
+
+# Show output on failure
+build --verbose_failures
+
+# Local disk cache (shared across workspaces on the same machine)
+build --disk_cache=~/.cache/bazel-disk-cache
+
+# CI config — activated with --config=ci in GitHub Actions.
+# The API key is passed separately via --remote_header in the workflow.
+build:ci --build_metadata=ROLE=CI
+build:ci --remote_cache=grpcs://remote.buildbuddy.io
+build:ci --bes_backend=grpcs://remote.buildbuddy.io
+build:ci --bes_results_url=https://app.buildbuddy.io/invocation/
+
+# Import user-local overrides (BuildBuddy API key, personal flags).
+# This file is gitignored — copy .bazelrc.user.template to .bazelrc.user and fill it in.
+try-import %workspace%/.bazelrc.user
