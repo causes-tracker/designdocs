@@ -1,0 +1,887 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A bug tracker built to free developers from the tedium of manual bug gardening.">
+      
+      
+      
+      
+        <link rel="prev" href="../Design-Choices/">
+      
+      
+        <link rel="next" href="../Contributing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>Decisions - Causes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-decision-records" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Causes" class="md-header__button md-logo" aria-label="Causes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Causes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Decisions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Causes" class="md-nav__button md-logo" aria-label="Causes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Causes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Manifesto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manifesto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Design-Choices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Choices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adr-001-distributed-and-replicated-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-001: Distributed and replicated data model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-002-signs-symptoms-plans-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-002: Signs / Symptoms / Plans separation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-003-no-hard-dependencies-on-proprietary-or-hosted-only-web-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-003: No hard dependencies on proprietary or hosted-only web services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-004-api-first-cli-builds-on-the-same-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-004: API-first; CLI builds on the same API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-005-open-source-licence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-005: Open source licence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-006-federation-strategy-distribute-dont-federate-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-006: Federation strategy — distribute, don't federate by default
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-007-push-notifications-via-websub-formerly-pubsubhubbub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-007: Push notifications via WebSub (formerly PubSubHubbub)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-008-language-stack-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-008: Language / stack — OPEN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-009-api-specification-format-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-009: API specification format — OPEN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-010-security-model-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-010: Security model — OPEN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-011-build-system-bazel-buildbuddy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-011: Build system — Bazel + BuildBuddy
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Raw-Discussion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Raw Discussion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adr-001-distributed-and-replicated-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-001: Distributed and replicated data model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-002-signs-symptoms-plans-separation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-002: Signs / Symptoms / Plans separation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-003-no-hard-dependencies-on-proprietary-or-hosted-only-web-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-003: No hard dependencies on proprietary or hosted-only web services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-004-api-first-cli-builds-on-the-same-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-004: API-first; CLI builds on the same API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-005-open-source-licence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-005: Open source licence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-006-federation-strategy-distribute-dont-federate-by-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-006: Federation strategy — distribute, don't federate by default
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-007-push-notifications-via-websub-formerly-pubsubhubbub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-007: Push notifications via WebSub (formerly PubSubHubbub)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-008-language-stack-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-008: Language / stack — OPEN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-009-api-specification-format-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-009: API specification format — OPEN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-010-security-model-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-010: Security model — OPEN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adr-011-build-system-bazel-buildbuddy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADR-011: Build system — Bazel + BuildBuddy
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="architecture-decision-records">Architecture Decision Records</h1>
+<p>Decisions extracted from <a href="../Raw-Discussion/">Raw-Discussion.md</a>, <a href="../Manifesto/">Manifesto.md</a>, and <a href="../Design-Choices/">Design-Choices.md</a>.
+Each record follows the format: <strong>context → decision → status → consequences</strong>.</p>
+<hr />
+<h2 id="adr-001-distributed-and-replicated-data-model">ADR-001: Distributed and replicated data model</h2>
+<p><strong>Status:</strong> Accepted</p>
+<p><strong>Context:</strong> A centralised model is simpler to build but prevents offline use, private/behind-firewall deployments, and integration with external data sources (crash databases, downstream trackers).
+The team had extensive experience with Launchpad's centralised model and its limitations.</p>
+<p><strong>Decision:</strong> Support both distributed and replicated operation.
+Not all data sets need to be replicated everywhere (e.g. crash reports may be too voluminous), but the architecture must accommodate local repositories that sync with a remote.</p>
+<p><strong>Consequences:</strong> Increased implementation complexity.
+Conflict resolution and eventual consistency must be designed in from the start.
+Enables offline-first operation and private deployments without a separate codebase.</p>
+<hr />
+<h2 id="adr-002-signs-symptoms-plans-separation">ADR-002: Signs / Symptoms / Plans separation</h2>
+<p><strong>Status:</strong> Accepted</p>
+<p><strong>Context:</strong> Traditional bug trackers conflate machine-gathered crash data (signs), human-reported issues (symptoms), and proposed fixes (plans) into a single "bug" entity.
+This causes friction: duplicating two symptoms because they share a fix loses the ability to triangulate the problem if the fix turns out to be wrong.</p>
+<p><strong>Decision:</strong> Model these as three distinct entity types.
+Signs are machine-oriented and typically processed in aggregate.
+Symptoms are human-authored and discussion-heavy.
+Plans are developer-authored proposals for change, linked to one or more signs or symptoms.</p>
+<p><strong>Consequences:</strong> Richer data model but more cognitive overhead for users new to the system.
+The UI must guide users to the right entity type.
+See Manifesto.md for the full rationale.</p>
+<hr />
+<h2 id="adr-003-no-hard-dependencies-on-proprietary-or-hosted-only-web-services">ADR-003: No hard dependencies on proprietary or hosted-only web services</h2>
+<p><strong>Status:</strong> Accepted</p>
+<p><strong>Context:</strong> The project must support private/air-gapped deployments.
+Any dependency on an external hosted service (e.g. a specific SMTP relay, a cloud push service) would prevent this.</p>
+<p><strong>Decision:</strong> Only use components for which a fully offline or self-hosted implementation exists.
+The reference implementation must be deployable with no external service dependencies beyond standard protocols (HTTP, SMTP).</p>
+<p><strong>Consequences:</strong> Excludes some convenient hosted services.
+Pushes toward standard protocols (WebSub, Atom, SMTP) over proprietary APIs.</p>
+<hr />
+<h2 id="adr-004-api-first-cli-builds-on-the-same-api">ADR-004: API-first; CLI builds on the same API</h2>
+<p><strong>Status:</strong> Accepted</p>
+<p><strong>Context:</strong> Keeping the CLI and HTTP API as separate code paths leads to divergence and duplication.</p>
+<p><strong>Decision:</strong> The CLI is a client of the same local HTTP API that remote clients use.
+The HTTP daemon provides API services; the CLI calls it.
+This keeps layers clean and makes the API a first-class deliverable.</p>
+<p><strong>Consequences:</strong> The HTTP daemon must be running for CLI operations, or the CLI must embed the same logic.
+Local-only mode needs consideration.</p>
+<hr />
+<h2 id="adr-005-open-source-licence">ADR-005: Open source licence</h2>
+<p><strong>Status:</strong> Accepted</p>
+<p><strong>Context:</strong> The team has day jobs and no interest in competing commercially with Atlassian, GitHub, Linear, etc.</p>
+<p><strong>Decision:</strong> Apache 2.0 or MIT licence.
+Final choice between them is not yet made but both are acceptable.
+Contributions must be dual-licensed under both to allow downstream users to choose.</p>
+<p><strong>Consequences:</strong> No commercial restrictions.
+Anyone can fork and self-host.</p>
+<hr />
+<h2 id="adr-006-federation-strategy-distribute-dont-federate-by-default">ADR-006: Federation strategy — distribute, don't federate by default</h2>
+<p><strong>Status:</strong> Accepted (with caveats)</p>
+<p><strong>Context:</strong> Full peer-to-peer federation (as in ActivityPub) is complex and hard to get right.
+The team discussed whether upstream/downstream relationships (e.g. a distro tracking upstream bugs) require true federation or can be handled by asymmetric replication.</p>
+<p><strong>Decision:</strong> Default to distribution (pull everything from a remote into a local repository).
+True federation (pushing selected data upstream) is supported but not the primary model.
+Downstream chooses what to push upstream; upstream can pull everything if desired.</p>
+<p><strong>Consequences:</strong> Simpler than full federation.
+Downstream operators have control.
+Does not preclude ActivityPub-style federation in the future.</p>
+<hr />
+<h2 id="adr-007-push-notifications-via-websub-formerly-pubsubhubbub">ADR-007: Push notifications via WebSub (formerly PubSubHubbub)</h2>
+<p><strong>Status:</strong> Accepted — <em>review recommended</em></p>
+<p><strong>Context:</strong> The original design used PubSubHubbub (PSHB) for server-to-server push and websockets for browser clients, via a stateless proxy daemon.</p>
+<p><strong>Decision:</strong> Use WebSub (the W3C standardisation of PSHB, Recommendation 2018) for server-to-server content push.
+Use websockets for browser clients.
+A stateless proxy daemon subscribes to WebSub feeds and delivers events to connected browser clients.</p>
+<p><strong>Consequences:</strong> WebSub is a W3C standard but has limited adoption outside the IndieWeb community.
+Review whether Server-Sent Events (SSE) better fits the browser-client use case (simpler, unidirectional, HTTP/1.1 compatible).
+Webhooks are now more widely understood than WebSub for server-to-server push and may be a more pragmatic choice.</p>
+<hr />
+<h2 id="adr-008-language-stack-open">ADR-008: Language / stack — OPEN</h2>
+<p><strong>Status:</strong> Open — decision required before implementation</p>
+<p><strong>Context:</strong> Discussions in 2012–2013 mentioned Haskell, Clojure, Python, and PyPy as possibilities.
+No decision was recorded.
+The <code>.gitignore</code> in this repo suggests Haskell/Cabal was considered at some point.</p>
+<p><strong>Decision:</strong> <em>Not yet made.</em></p>
+<p><strong>Options to consider:</strong></p>
+<ul>
+<li><strong>Python</strong> (broad contributor base, good web frameworks, fast prototyping)</li>
+<li><strong>Go</strong> (easy deployment as a single binary, strong concurrency story, good for API servers)</li>
+<li><strong>Rust</strong> (performance, safety, single binary — but steeper learning curve)</li>
+<li><strong>Haskell</strong> (original preference of some contributors — strong type safety, but small contributor pool)</li>
+<li><strong>TypeScript/Node</strong> (large ecosystem, full-stack possibility)</li>
+</ul>
+<p><strong>Criteria:</strong> Easy for contributors to onboard, produces easily-deployed binaries or containers, has mature web framework and test ecosystem.</p>
+<hr />
+<h2 id="adr-009-api-specification-format-open">ADR-009: API specification format — OPEN</h2>
+<p><strong>Status:</strong> Open</p>
+<p><strong>Context:</strong> The design specifies a RESTful JSON API but no specification format was chosen.</p>
+<p><strong>Decision:</strong> <em>Not yet made.</em>
+Recommend <a href="https://spec.openapis.org/oas/v3.1.0">OpenAPI 3.x</a> as the industry-standard format for describing REST APIs.</p>
+<hr />
+<h2 id="adr-010-security-model-open">ADR-010: Security model — OPEN</h2>
+<p><strong>Status:</strong> Open — must be resolved before any public deployment</p>
+<p><strong>Context:</strong> The original docs have no mention of authentication, authorisation, or security hardening.
+For a system that can hold private bug data (e.g. security vulnerabilities), this is a critical gap.</p>
+<p><strong>Decision:</strong> <em>Not yet made.</em>
+Areas to define:</p>
+<ul>
+<li>Authentication: OAuth 2.0 / OIDC for browser users; API tokens for CLI and service-to-service</li>
+<li>Authorisation: role-based (user / developer / project admin) with per-repository ACLs</li>
+<li>Transport: HTTPS mandatory for any networked deployment</li>
+<li>Security disclosure workflow: private plans/symptoms visible only to authorised parties until disclosed</li>
+</ul>
+<hr />
+<h2 id="adr-011-build-system-bazel-buildbuddy">ADR-011: Build system — Bazel + BuildBuddy</h2>
+<p><strong>Status:</strong> Accepted</p>
+<p><strong>Context:</strong> The repository will contain at least three distinct build targets: a TypeScript web UI, a CLI (command-line API client), and a backend server in a memory-safe systems language (Go or Rust, per ADR-008).
+Builds must work efficiently on developer machines (Windows, macOS, Linux) and in CI (GitHub Actions).
+Remote caching is required to keep CI fast as the codebase grows.
+The system must remain usable by both human contributors and AI coding agents.</p>
+<p>Options evaluated: Bazel + BuildBuddy, Buck2, Nx, Moon, Earthly, Gradle.
+Earthly was abandoned by its maintainers in mid-2025.
+Gradle has no genuine build-graph support for Go or Rust.
+Buck2 has a small external community and no managed caching offering.
+Moon (v2.0, February 2026) has first-class polyglot support but only ~79 contributors versus Bazel's 1000+; too new for a project that values stability.
+Nx is well-suited to TypeScript-primary monorepos but has no Rust plugin as of early 2026.</p>
+<p><strong>Decision:</strong> Use <a href="https://bazel.build">Bazel</a> as the build system with <a href="https://www.buildbuddy.io">BuildBuddy</a> for remote caching and build observability.
+Use <a href="https://github.com/bazelbuild/bazelisk">Bazelisk</a> to pin and auto-install the correct Bazel version — contributors never install Bazel directly.
+Use <a href="https://github.com/bazel-contrib/bazel-gazelle">Gazelle</a> to auto-generate and maintain <code>BUILD</code> files for Go targets (eliminates the main maintenance burden for Go).
+Use <code>rules_ts</code> for TypeScript and <code>rules_rust</code> for Rust if Rust is chosen (ADR-008).</p>
+<p><strong>Windows strategy:</strong> <code>rules_rust</code> disables its own Windows CI tests due to lack of maintainer expertise.
+Windows developers building Rust targets must use a Dev Container (VSCode Remote Containers or GitHub Codespaces) which provides a Linux environment.
+Windows developers working only on TypeScript targets may build natively.
+If the backend language decision (ADR-008) lands on Go rather than Rust, the Windows constraint disappears — <code>rules_go</code> is CI-tested on Windows.</p>
+<p><strong>Remote caching:</strong> BuildBuddy free tier (10 users, 100 GB cache transfer/month, up to 80 remote execution cores) is sufficient for early development.
+Self-hosted <code>bazel-remote</code> is an alternative if the free tier is outgrown or data residency is a concern.</p>
+<p><strong>Consequences:</strong> Bazel's hermetic, reproducible builds make CI reliable and agent-friendly — any machine produces identical outputs.
+BUILD file authoring has a learning curve; Gazelle reduces this significantly for Go.
+<code>MODULE.bazel</code> (bzlmod) is the current dependency management approach; some rulesets still have rough edges with bzlmod.
+If scale demands it in future (remote execution, very large codebase), the same Bazel infrastructure scales without a migration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
