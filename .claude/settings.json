@@ -6,7 +6,10 @@
       "Bash(gh api:*)",
       "Bash(bazel clean:*)",
       "Bash(bazel test:*)",
-      "Bash(jj:*)"
+      "Bash(jj:*)",
+      "Bash(jj git fetch:*)",
+      "Bash(jj rebase -r mutable:*)",
+      "Bash(jj git push --all:*)"
     ]
   }
 }
