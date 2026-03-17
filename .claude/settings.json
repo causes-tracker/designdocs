@@ -3,7 +3,9 @@
     "allow": [
       "Bash(gh run:*)",
       "Bash(bazel clean:*)",
-      "Bash(bazel test:*)"
+      "Bash(bazel test:*)",
+      "Bash(jj bookmark:*)",
+      "Bash(jj git:*)"
     ]
   }
 }
