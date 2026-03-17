@@ -2,6 +2,10 @@
 /bazel-*
 .bazelrc.user
 
+# Node / pnpm
+node_modules/
+.pnpm-store/
+
 # Jujutsu — local VCS layer over Git, not part of the shared repo
 .jj/
 
