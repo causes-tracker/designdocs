@@ -100,4 +100,5 @@ move it to the right place in history once it works.
 jj log       # graph of changes
 jj diff      # what changed in @
 jj squash    # fold @ into its parent
+jj abandon 'empty() & ~merges() & mutable()'   # safely drop all empty scratch changes
 ```
