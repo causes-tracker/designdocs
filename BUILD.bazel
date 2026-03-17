@@ -1,10 +1,19 @@
 load("@gazelle//:def.bzl", "gazelle")
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 
 package(default_visibility = ["//visibility:public"])
 
 # Run with: bazel run //:gazelle
 # Generates and updates BUILD files for Go targets.
 gazelle(name = "gazelle")
+
+# Regenerate requirements_lock.txt with: bazel run //:requirements.update
+compile_pip_requirements(
+    name = "requirements",
+    src = "requirements.in",
+    requirements_txt = "requirements_lock.txt",
+    python_version = "3.12",
+)
 
 # Exposes all design docs as a Bazel target so //docs:docs_site can depend on them.
 filegroup(
