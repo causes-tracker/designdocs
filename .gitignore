@@ -9,8 +9,9 @@ node_modules/
 # Jujutsu — local VCS layer over Git, not part of the shared repo
 .jj/
 
-# Claude Code — local permission overrides (each developer grants their own)
+# Claude Code — local runtime files and permission overrides
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
 
 dist
 cabal-dev
