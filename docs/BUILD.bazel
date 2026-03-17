@@ -5,13 +5,19 @@ load(
     "py_console_script_binary",
 )
 
-# Hermetically managed mkdocs binary.
-# Run directly with: bazel run //docs:mkdocs -- build --strict
+# Hermetically managed zensical binary.
+# Run directly with: bazel run //docs:zensical -- build
 py_console_script_binary(
-    name = "mkdocs",
-    pkg = "@pip//mkdocs",
-    script = "mkdocs",
-    deps = ["@pip//mkdocs_material"],
+    name = "zensical",
+    pkg = "@pip//zensical",
+    script = "zensical",
+)
+
+# Hermetically managed ghp-import binary for deploying to GitHub Pages.
+py_console_script_binary(
+    name = "ghp_import",
+    pkg = "@pip//ghp_import",
+    script = "ghp-import",
 )
 
 # Build the static docs site.
@@ -22,23 +28,46 @@ genrule(
     outs = ["site.tar.gz"],
     cmd = """
         EXECROOT=$$(pwd)
-        cd docs
-        $$EXECROOT/$(location :mkdocs) build --strict \
-            --config-file=mkdocs.yml \
-            --site-dir $$EXECROOT/$(@D)/site_tmp
-        tar czf $$EXECROOT/$@ -C $$EXECROOT/$(@D) site_tmp
+        OUTDIR=$$EXECROOT/$(@D)
+        # Zensical requires the config to sit at the project root with relative paths.
+        # The Bazel sandbox uses a double-symlink chain (sandbox → execroot → source).
+        # Zensical silently finds 0 pages through double-symlinks, so copy files with -L
+        # to dereference all symlinks and produce real files.
+        mkdir $$OUTDIR/designdocs
+        cp -rL $$EXECROOT/designdocs/. $$OUTDIR/designdocs/
+        sed -e '/^docs_dir:/d' -e '/^site_dir:/d' docs/mkdocs.yml > $$OUTDIR/mkdocs.yml
+        echo "docs_dir: designdocs" >> $$OUTDIR/mkdocs.yml
+        cd $$OUTDIR
+        $$EXECROOT/$(location :zensical) build --clean
+        # Zensical locates its theme assets via __file__ at runtime, but the Bazel
+        # runfiles layout differs from a regular pip install, so it silently skips
+        # the copy. Copy them manually from the tool's runfiles.
+        ZENSICAL_ASSETS=$$(find $$EXECROOT/$(location :zensical).runfiles -path "*/zensical/templates/assets" -type d | head -1)
+        cp -rL "$$ZENSICAL_ASSETS" $$OUTDIR/site/assets
+        tar czf $$EXECROOT/$@ -C $$OUTDIR site
     """,
-    tools = [":mkdocs"],
+    tools = [":zensical"],
+)
+
+# Start the Zensical dev server with live reload.
+# Run with: bazel run //docs:serve_docs  →  browse http://localhost:8000
+sh_binary(
+    name = "serve_docs",
+    srcs = ["serve_docs.sh"],
+    data = [
+        ":zensical",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
 )
 
 # Deploy docs to GitHub Pages.
-# Run with:  bazel run //docs:deploy_docs
-# Also called by docs_test with explicit mkdocs args (build --strict).
+# Run with: bazel run //docs:deploy_docs
 sh_binary(
     name = "deploy_docs",
     srcs = ["deploy_docs.sh"],
     data = [
-        ":mkdocs",
+        ":ghp_import",
+        ":zensical",
         "//:designdocs",
         "mkdocs.yml",
         "@bazel_tools//tools/bash/runfiles",
@@ -46,12 +75,13 @@ sh_binary(
 )
 
 # Smoke-test the docs build. Run with: bazel test //docs:docs_test
-# Calls deploy_docs directly so changes to deploy_docs.sh are covered.
 sh_test(
     name = "docs_test",
     srcs = ["docs_test.sh"],
     data = [
-        ":deploy_docs",
+        ":zensical",
+        "//:designdocs",
+        "mkdocs.yml",
         "@bazel_tools//tools/bash/runfiles",
     ],
 )

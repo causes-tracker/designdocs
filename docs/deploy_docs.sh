@@ -1,17 +1,9 @@
 #!/usr/bin/env bash
-# Runs mkdocs from the correct working directory.
-#
-# When BUILD_WORKSPACE_DIRECTORY is set (bazel run), uses the actual workspace
-# docs/ directory so git is available for gh-deploy.
-# When called without BUILD_WORKSPACE_DIRECTORY (e.g. from docs_test), uses
-# the runfiles docs/ directory so designdocs data deps are reachable.
-#
-# Default: bazel run //docs:deploy_docs  →  gh-deploy --force
-# Test:    called by docs_test with explicit mkdocs args
+# Builds the docs with Zensical and deploys to GitHub Pages via ghp-import.
+# Run with: bazel run //docs:deploy_docs
 set -euo pipefail
 
-# Standard Bazel 3-way runfiles init — works in sh_test (RUNFILES_DIR set)
-# and sh_binary/bazel-run (BASH_SOURCE[0].runfiles present).
+# Standard Bazel 3-way runfiles init.
 if [[ -f "${RUNFILES_DIR:-/dev/null}/bazel_tools/tools/bash/runfiles/runfiles.bash" ]]; then
   # shellcheck source=/dev/null
   source "${RUNFILES_DIR}/bazel_tools/tools/bash/runfiles/runfiles.bash"
@@ -27,18 +19,11 @@ else
   exit 1
 fi
 
-MKDOCS=$(rlocation _main/docs/mkdocs)
+ZENSICAL=$(rlocation _main/docs/zensical)
+GHP_IMPORT=$(rlocation _main/docs/ghp_import)
 
-# Use the actual workspace docs/ when running via `bazel run` so git works.
-# Fall back to the runfiles docs/ when called from docs_test (no workspace).
-if [[ -n "${BUILD_WORKSPACE_DIRECTORY:-}" ]]; then
-  cd "$BUILD_WORKSPACE_DIRECTORY/docs"
-else
-  cd "$(dirname "$(rlocation _main/docs/mkdocs.yml)")"
-fi
+# Use the actual workspace docs/ so git is available for the gh-pages push.
+cd "${BUILD_WORKSPACE_DIRECTORY}/docs"
 
-if [[ $# -eq 0 ]]; then
-  exec "$MKDOCS" gh-deploy --force
-else
-  exec "$MKDOCS" "$@"
-fi
+"$ZENSICAL" build
+"$GHP_IMPORT" --force --push site
