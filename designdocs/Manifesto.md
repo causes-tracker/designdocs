@@ -248,7 +248,7 @@ Similarly, see what has happened in the whole project recently, over the last mo
   LP also models the needs of Linux distributions well — quite unique in that regard.
 - **GitHub Issues / GitLab Issues** — far more capable than in 2013; now a serious comparison point.
 - **Linear** — modern, fast, opinionated issue tracker with good developer ergonomics.
-- **Plane** — open-source Linear alternative; good reference for self-hostable modern trackers.
+- **Plane** — single-vendor AGPL Linear alternative; good reference for self-hostable modern trackers, but the licence is a compliance trap rather than genuine open source.
 - **Pivotal Tracker** — an agile story tracker, not a bug tracker (though it can double for small projects).
 - **Bugzilla** — well known, but not in any sense simple.
 - [AllSoftwareIsBroken](https://web.archive.org/web/20130101000000*/http://pqxx.org/development/libpqxx/wiki/AllSoftwareIsBroken) — an experiment that tries to serve both users and developers in the categorisation of bug reports.
