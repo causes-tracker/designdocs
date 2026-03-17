@@ -14,6 +14,9 @@ Commits must pass all linting and tests before being made.
 Commits are kept strictly small: **400–500 lines maximum** (diff lines added + removed).
 If a change is larger, split it into a sequence of focused commits.
 
+For `bazel run` targets (servers, binaries): run them and confirm they start correctly before pushing — even long-running ones, which should be started, verified, then killed.
+"It builds" is not the same as "it works."
+
 ## Git workflow
 
 We use [Jujutsu (`jj`)](https://github.com/jj-vcs/jj) for local version control.
