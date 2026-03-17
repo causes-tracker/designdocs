@@ -41,8 +41,13 @@ jj describe -m "final message"        # refine when ready
 ```sh
 jj bookmark create <name> -r @
 jj git push -b <name>
-gh pr create ...
+gh pr create --base <parent-bookmark> ...
 ```
+
+The PR base branch must match the jj parent change's bookmark.
+If the change is a direct child of `master@origin`, the base is `master`.
+If it stacks on another change, the base is that change's bookmark.
+Never rebase a change to fix a wrong PR base — use `gh pr edit <n> --base <bookmark>` instead.
 
 **Keeping a branch up to date with master (never merge):**
 
@@ -51,6 +56,35 @@ jj git fetch
 jj rebase -d master
 jj git push -b <name> --force-with-lease
 ```
+
+**Working with multiple changes in parallel (merge-of-all-work pattern):**
+
+Keep a merge change that combines all in-progress branch tips, and a scratch
+change after it as the working copy:
+
+```sh
+jj new a b c -m "temp: merge all in-progress"   # create the merge
+jj new @                                          # scratch change after it
+```
+
+To promote the scratch change into a real branch and add it to the merge:
+
+```sh
+jj rebase -r <scratch> -A <intended-parent> -B <merge-change>
+# -A sets the new parent (old parent is not preserved); -B inserts it before the merge
+jj bookmark create <name> -r <scratch>
+jj git push -b <name>
+# After the rebase, @ moves to the promoted change — restore the scratch position:
+jj new <merge-change>
+```
+
+After `jj rebase -r <scratch> -A ... -B <merge>`, the working copy (`@`) lands
+on the promoted change (now inside the merge parents), not after the merge.
+Always run `jj new <merge-change>` immediately after to restore `@` to the
+scratch position above the merge.
+
+Always work on a new change at the tip; use `jj squash --into <target>` to
+move it to the right place in history once it works.
 
 **Useful commands:**
 
