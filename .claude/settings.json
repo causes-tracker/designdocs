@@ -2,10 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(gh run:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh api:*)",
       "Bash(bazel clean:*)",
       "Bash(bazel test:*)",
-      "Bash(jj bookmark:*)",
-      "Bash(jj git:*)"
+      "Bash(jj:*)"
     ]
   }
 }
