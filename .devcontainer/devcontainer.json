@@ -20,5 +20,5 @@
       ]
     }
   },
-  "postCreateCommand": "bazel version && npm install -g @anthropic-ai/claude-code"
+  "postCreateCommand": "bazel version && npm install -g @anthropic-ai/claude-code && (jj git init --colocate 2>/dev/null || true)"
 }
