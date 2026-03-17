@@ -9,7 +9,11 @@
       "Bash(jj:*)",
       "Bash(jj git fetch:*)",
       "Bash(jj rebase -r mutable:*)",
-      "Bash(jj git push --all:*)"
+      "Bash(jj git push --all:*)",
+      "Bash(jj rebase:*)",
+      "Bash(bazel build:*)",
+      "Bash(tar tzf:*)",
+      "Bash(jj log:*)"
     ]
   }
 }
