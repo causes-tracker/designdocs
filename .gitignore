@@ -2,6 +2,9 @@
 /bazel-*
 .bazelrc.user
 
+# Jujutsu — local VCS layer over Git, not part of the shared repo
+.jj/
+
 # Claude Code — local permission overrides (each developer grants their own)
 .claude/settings.local.json
 
