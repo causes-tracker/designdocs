@@ -39,8 +39,7 @@ jj describe -m "final message"        # refine when ready
 **Opening a PR:**
 
 ```sh
-jj bookmark create <name> -r @
-jj git push -b <name>
+jj git push --named <name>=@
 gh pr create --base <parent-bookmark> ...
 ```
 
@@ -55,6 +54,13 @@ Never rebase a change to fix a wrong PR base — use `gh pr edit <n> --base <boo
 jj git fetch
 jj rebase -d master
 jj git push -b <name> --force-with-lease
+```
+
+**After PRs merge — rebase and tidy the merge-of-all-work:**
+
+```sh
+jj git fetch && jj rebase -r 'mutable()' -d master@origin
+jj simplify-parents -r <merge-change>   # drop parents now reachable via master
 ```
 
 **Working with multiple changes in parallel (merge-of-all-work pattern):**
@@ -72,8 +78,7 @@ To promote the scratch change into a real branch and add it to the merge:
 ```sh
 jj rebase -r <scratch> -A <intended-parent> -B <merge-change>
 # -A sets the new parent (old parent is not preserved); -B inserts it before the merge
-jj bookmark create <name> -r <scratch>
-jj git push -b <name>
+jj git push --named <name>=<scratch>
 # After the rebase, @ moves to the promoted change — restore the scratch position:
 jj new <merge-change>
 ```
