@@ -29,6 +29,14 @@
       "depNameTemplate": "bazelbuild/buildtools",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^\\.devcontainer/Dockerfile$"],
+      "matchStrings": ["ARG JJ_VERSION=(?<currentValue>\\S+)"],
+      "depNameTemplate": "jj-vcs/jj",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
     }
   ]
 }
