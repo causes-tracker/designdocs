@@ -139,14 +139,23 @@ The `.gitignore` in this repo suggests Haskell/Cabal was considered at some poin
 
 ---
 
-## ADR-009: API specification format — OPEN
+## ADR-009: API specification format — Protobuf
 
-**Status:** Open
+**Status:** Accepted — reversible (2-way door)
 
-**Context:** The design specifies a RESTful JSON API but no specification format was chosen.
+**Context:** The design specifies a RESTful JSON API.
+Protobuf provides a language-agnostic schema with strong typing and multi-language code generation, which fits the distributed, multi-implementation nature of the project.
+Because components may be implemented in different languages (see ADR-008), the proto definition is the contract at component boundaries — language is an implementation detail per component.
 
-**Decision:** _Not yet made._
-Recommend [OpenAPI 3.x](https://spec.openapis.org/oas/v3.1.0) as the industry-standard format for describing REST APIs.
+**Decision:** Define the API in `.proto` files.
+Generate an OpenAPI spec as a published artifact via `protoc-gen-openapi` for third-party integrations and documentation.
+Use Server-Sent Events (SSE) for real-time browser updates — SSE is native in all browsers, requires no client library, and has built-in reconnect; it is the right tool for this concern regardless of the RPC framework.
+The choice of server-side RPC framework (Connect, grpc-gateway, tonic, etc.) is left to ADR-008 once the backend language is known.
+
+**Consequences:** Component boundaries defined by proto services make per-component language rewrites possible without changing callers.
+Browser streaming is handled by SSE, sidestepping gRPC/Connect streaming complexity in the browser.
+OpenAPI is a generated artifact, not the source of truth.
+If a specific RPC framework proves problematic, proto definitions remain valid and the framework can be swapped.
 
 ---
 

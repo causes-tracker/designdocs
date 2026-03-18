@@ -63,9 +63,12 @@ This keeps the HTTP API server stateless.
 
 ## API specification
 
-The HTTP API is RESTful with JSON representations.
-The API spec format is not yet decided; [OpenAPI 3.x](https://spec.openapis.org/oas/v3.1.0) is recommended.
-See [ADR-009](Decisions.md#adr-009-api-specification-format-open).
+The API is defined in `.proto` files.
+An OpenAPI spec is generated from the proto definitions and published for third-party integrations.
+Proto service definitions are the contract at component boundaries, making the backend language an implementation detail per component.
+The choice of RPC framework (Connect, grpc-gateway, tonic, etc.) follows the language decision in ADR-008.
+Real-time browser updates use Server-Sent Events (SSE), which is browser-native and requires no client library.
+See [ADR-009](Decisions.md#adr-009-api-specification-format--protobuf).
 
 ## Security
 
