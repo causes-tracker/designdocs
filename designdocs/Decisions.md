@@ -112,7 +112,7 @@ Use websockets for browser clients.
 A stateless proxy daemon subscribes to WebSub feeds and delivers events to connected browser clients.
 
 **Consequences:** WebSub is a W3C standard but has limited adoption outside the IndieWeb community.
-Review whether Server-Sent Events (SSE) better fits the browser-client use case (simpler, unidirectional, HTTP/1.1 compatible).
+Review whether Server-Sent Events (SSE) better fits the browser-client use case (simpler, unidirectional); ADR-009 has since adopted SSE for browser updates.
 Webhooks are now more widely understood than WebSub for server-to-server push and may be a more pragmatic choice.
 
 ---
